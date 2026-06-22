@@ -1,15 +1,17 @@
+/* ===== styles.css ===== */
+
+/* ---------- Design tokens (SaaS palette) ---------- */
 :root {
-  --primary: #7c3aed; /* vivid violet - primary brand color */
-  --primary-dark: #5b21b6;
-  --primary-light: #a78bfa;
-  --accent: #fb923c; /* vivid orange - CTA / accent color */
-  --accent-dark: #ea580c;
-  --accent-pink: #f472b6; /* secondary accent for gradients */
-  --bg: #f7f6fc;
+  --primary: #8b5a2b; /* vivid caramel - coffee-rooted primary */
+  --primary-dark: #4a2c17; /* deep espresso */
+  --primary-light: #c68b59; /* light caramel */
+  --accent: #e8a33d; /* golden amber - CTA / accent color */
+  --accent-dark: #c97b1f;
+  --bg: #fff8f0; /* warm cream background */
   --surface: #ffffff;
-  --text-dark: #1e1b2e;
-  --text-muted: #635d78;
-  --border-subtle: #e6e2f5;
+  --text-dark: #2b1810;
+  --text-muted: #7a5c44;
+  --border-subtle: #efe0cc;
   --radius-sm: 8px;
   --radius-md: 14px;
   --radius-lg: 20px;
@@ -120,7 +122,7 @@ input:focus-visible {
   gap: 8px;
   font-size: 1.3rem;
   font-weight: 800;
-  background: linear-gradient(135deg, var(--primary), var(--accent-pink));
+  background: linear-gradient(135deg, var(--primary), var(--accent));
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -188,11 +190,24 @@ input:focus-visible {
 .search-wrap input {
   border: none;
   outline: none;
+  -webkit-appearance: none;
+  appearance: none;
   background: transparent;
   padding: 7px 4px;
-  width: 150px;
+  width: 100%;
+  max-width: 150px;
   color: var(--text-dark);
-  font-size: 0.9rem;
+  font-size: clamp(0.85rem, 2.2vw, 1rem);
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+input[type="search"]::-webkit-search-decoration,
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-results-button,
+input[type="search"]::-webkit-search-results-decoration {
+  -webkit-appearance: none;
 }
 
 .search-wrap input::placeholder {
@@ -256,8 +271,8 @@ input:focus-visible {
 .hero {
   background: linear-gradient(
     135deg,
-    var(--primary) 0%,
-    var(--accent-pink) 55%,
+    var(--primary-dark) 0%,
+    var(--primary) 55%,
     var(--accent) 100%
   );
   color: #fff;
@@ -685,8 +700,8 @@ main {
 
 /* ---------- Footer / Contact ---------- */
 .site-footer {
-  background: linear-gradient(135deg, #2a1b4d, #4c1d95);
-  color: #ede9fe;
+  background: linear-gradient(135deg, #2b1810, #4a2c17);
+  color: #f4e3c8;
   padding: 40px 24px;
   text-align: center;
   font-size: 0.92rem;
@@ -736,7 +751,7 @@ main {
     font-size: 0.88rem;
   }
   .search-wrap input {
-    width: 100px;
+    max-width: 100px;
   }
   .hero {
     padding: 48px 18px 42px;

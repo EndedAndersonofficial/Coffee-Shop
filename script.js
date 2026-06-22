@@ -213,6 +213,11 @@ function renderCart(cartItemsEl, cartTotalEl, cartCountEl, cart) {
 
   cartTotalEl.textContent = formatPrice(cartTotal(cart));
 }
+/* ===== main.js =====
+   App state, event wiring, and the smooth-scroll nav behavior.
+   Depends on helpers.js being loaded first.
+*/
+
 // ---------- State ----------
 let cart = Storage.get(CART_KEY) || []; // [{ id, qty }]
 let activeCategory = "All";
