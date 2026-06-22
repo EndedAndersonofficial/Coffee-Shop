@@ -8,9 +8,9 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <a href="#items" class="skip-link">Skip to content</a>
+    <!-- Apply saved theme before paint to avoid a flash of the wrong theme -->
 
-    <!-- ===== index.html body markup ===== -->
+    <a href="#items" class="skip-link">Skip to content</a>
 
     <header class="site-header">
       <div class="header-inner">
@@ -19,11 +19,6 @@
           <span>Brew &amp; Bean</span>
         </a>
 
-        <!--
-      Nav links use real #anchors (works without JS) AND get intercepted by
-      main.js for an animated smooth scroll + accessible focus handoff.
-      data-nav-target points at the section id each button should land on.
-    -->
         <nav class="main-nav" aria-label="Primary navigation">
           <ul>
             <li><a href="#items" data-nav-target="items">Menu</a></li>
@@ -45,6 +40,16 @@
             />
             <button type="submit" aria-label="Search">🔍</button>
           </form>
+
+          <button
+            class="theme-toggle"
+            id="theme-toggle"
+            role="switch"
+            aria-checked="false"
+            aria-label="Toggle dark mode"
+          >
+            <span class="theme-toggle-thumb" aria-hidden="true">🌙</span>
+          </button>
 
           <button
             class="cart-btn"
@@ -104,7 +109,6 @@
 
       <p class="results-info" id="results-info" aria-live="polite"></p>
 
-      <!-- #items: target for the "Menu" nav link -->
       <section
         class="items-section"
         id="items"
@@ -112,12 +116,12 @@
         aria-label="Coffee menu"
       >
         <h2 class="visually-hidden">Coffee Catalog</h2>
-        <div class="product-grid" id="product-grid">
-          <!-- Product cards are rendered here by main.js -->
-        </div>
+        <!-- Product list: now a <ul role="list"> of <li class="product-card"> items -->
+        <ul class="product-grid" id="product-grid" role="list">
+          <!-- Product items rendered here by script.js -->
+        </ul>
       </section>
 
-      <!-- #about: target for the "About" nav link -->
       <section
         class="about-section"
         id="about"
@@ -135,7 +139,6 @@
       </section>
     </main>
 
-    <!-- Cart overlay + slide-out panel -->
     <div class="cart-overlay" id="cart-overlay"></div>
 
     <aside
@@ -153,9 +156,7 @@
         </button>
       </div>
 
-      <div class="cart-items" id="cart-items">
-        <!-- Cart line items rendered by main.js -->
-      </div>
+      <div class="cart-items" id="cart-items"></div>
 
       <div class="cart-footer">
         <div class="cart-total">
@@ -169,7 +170,6 @@
 
     <div class="toast" id="toast" role="status"></div>
 
-    <!-- #footer: target for the "Contact" nav link; also the real page footer -->
     <footer
       class="site-footer"
       id="footer"

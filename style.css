@@ -1,13 +1,12 @@
-/* ===== styles.css ===== */
+/* ===== style.css ===== */
 
-/* ---------- Design tokens (SaaS palette) ---------- */
 :root {
-  --primary: #8b5a2b; /* vivid caramel - coffee-rooted primary */
-  --primary-dark: #4a2c17; /* deep espresso */
-  --primary-light: #c68b59; /* light caramel */
-  --accent: #e8a33d; /* golden amber - CTA / accent color */
+  --primary: #8b5a2b;
+  --primary-dark: #4a2c17;
+  --primary-light: #c68b59;
+  --accent: #e8a33d;
   --accent-dark: #c97b1f;
-  --bg: #fff8f0; /* warm cream background */
+  --bg: #fff8f0;
   --surface: #ffffff;
   --text-dark: #2b1810;
   --text-muted: #7a5c44;
@@ -18,7 +17,25 @@
   --shadow-sm: 0 2px 8px #745237;
   --shadow-md: 0 5px 15px #745237;
   --shadow-lg: 0 10px 20px #745237;
-  --focus-ring: 0 0 0 1px #7a5c44;
+  --focus-ring: 0 0 0 2px #7a5c44;
+}
+
+/* ---------- Dark theme tokens ---------- */
+[data-theme="dark"] {
+  --primary: #d99b5b;
+  --primary-dark: #8b5a2b;
+  --primary-light: #e8c39a;
+  --accent: #f2b463;
+  --accent-dark: #d9822b;
+  --bg: #1b140f;
+  --surface: #2a2018;
+  --text-dark: #f5e9da;
+  --text-muted: #c9ad90;
+  --border-subtle: #3d2f22;
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.45);
+  --shadow-md: 0 5px 18px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 12px 28px rgba(0, 0, 0, 0.55);
+  --focus-ring: 0 0 0 2px #f2b463;
 }
 
 * {
@@ -26,7 +43,7 @@
 }
 
 html {
-  scroll-behavior: smooth; /* CSS-level smooth scroll fallback for anchor links */
+  scroll-behavior: smooth;
 }
 
 body {
@@ -36,6 +53,9 @@ body {
   color: var(--text-dark);
   line-height: 1.55;
   -webkit-font-smoothing: antialiased;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
 }
 
 a {
@@ -61,7 +81,6 @@ h3 {
   letter-spacing: -0.01em;
 }
 
-/* Skip link for keyboard users */
 .skip-link {
   position: absolute;
   left: -999px;
@@ -87,7 +106,7 @@ h3 {
   white-space: nowrap;
 }
 
-/* Consistent, visible focus state used everywhere instead of the browser default */
+/* FIX: focus-visible previously removed outline with no replacement (a11y bug) */
 a:focus-visible,
 button:focus-visible,
 input:focus-visible {
@@ -102,6 +121,9 @@ input:focus-visible {
   top: 0;
   z-index: 50;
   box-shadow: var(--shadow-sm);
+  transition:
+    background-color 0.3s ease,
+    box-shadow 0.3s ease;
 }
 
 .header-inner {
@@ -168,7 +190,6 @@ input:focus-visible {
   gap: 10px;
 }
 
-/* Search: no visible border anywhere, but a clear accessible focus state */
 .search-wrap {
   display: flex;
   align-items: center;
@@ -227,8 +248,37 @@ input[type="search"]::-webkit-search-results-decoration {
   transition: background 0.2s ease;
 }
 
-.search-wrap button:hover {
-  background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+/* ---------- Theme toggle switch ---------- */
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  width: 50px;
+  height: 28px;
+  padding: 3px;
+  border-radius: 999px;
+  background: var(--border-subtle);
+  transition: background-color 0.3s ease;
+  flex-shrink: 0;
+}
+
+.theme-toggle-thumb {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  transform: translateX(0);
+  transition:
+    transform 0.3s ease,
+    background-color 0.3s ease;
+}
+
+[data-theme="dark"] .theme-toggle-thumb {
+  transform: translateX(22px);
 }
 
 .cart-btn {
@@ -356,10 +406,10 @@ input[type="search"]::-webkit-search-results-decoration {
   min-height: 1.2em;
 }
 
-/* ---------- Product grid (Flexbox) ---------- */
+/* ---------- Product list (now a <ul> of <li> per a11y-correct markup) ---------- */
 main {
   scroll-margin-top: 80px;
-} /* offsets sticky header when anchor-scrolled to */
+}
 
 .items-section {
   max-width: 1140px;
@@ -373,7 +423,9 @@ main {
   flex-wrap: wrap;
   justify-content: space-evenly;
   gap: 22px;
-  margin-top: 18px;
+  margin: 18px 0 0;
+  padding: 0;
+  list-style: none;
 }
 
 .product-card {
@@ -387,7 +439,8 @@ main {
   flex-direction: column;
   transition:
     transform 0.2s ease,
-    box-shadow 0.2s ease;
+    box-shadow 0.2s ease,
+    background-color 0.3s ease;
 }
 
 .product-card:hover {
@@ -467,6 +520,7 @@ main {
   padding: 40px 20px;
   color: var(--text-muted);
   width: 100%;
+  list-style: none;
 }
 
 /* ---------- About section ---------- */
@@ -485,6 +539,7 @@ main {
   box-shadow: var(--shadow-sm);
   padding: 32px;
   max-width: 680px;
+  transition: background-color 0.3s ease;
 }
 
 .about-card h2 {
@@ -520,7 +575,9 @@ main {
   background: var(--bg);
   box-shadow: -8px 0 24px rgba(30, 27, 46, 0.18);
   transform: translateX(100%);
-  transition: transform 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    background-color 0.3s ease;
   z-index: 100;
   display: flex;
   flex-direction: column;
@@ -537,6 +594,7 @@ main {
   padding: 18px 22px;
   background: linear-gradient(135deg, var(--primary), var(--primary-dark));
   color: #fff;
+  transition: background-color 0.3s ease;
 }
 
 .cart-header h2 {
@@ -574,6 +632,7 @@ main {
   padding: 10px;
   align-items: center;
   box-shadow: var(--shadow-sm);
+  transition: background-color 0.3s ease;
 }
 
 .cart-item-icon {
@@ -640,6 +699,9 @@ main {
   padding: 18px 22px;
   border-top: 1px solid var(--border-subtle);
   background: var(--surface);
+  transition:
+    background-color 0.3s ease,
+    border-color 0.3s ease;
 }
 
 .cart-total {
@@ -682,14 +744,16 @@ main {
   left: 50%;
   transform: translateX(-50%) translateY(20px);
   background: var(--text-dark);
-  color: #fff;
+  color: var(--bg);
   padding: 11px 20px;
   border-radius: var(--radius-md);
   font-size: 0.9rem;
   opacity: 0;
   transition:
     opacity 0.25s ease,
-    transform 0.25s ease;
+    transform 0.25s ease,
+    background-color 0.3s ease,
+    color 0.3s ease;
   z-index: 120;
   pointer-events: none;
   box-shadow: var(--shadow-md);
@@ -741,38 +805,6 @@ main {
 }
 
 /* ---------- Responsive breakpoints ---------- */
-@media (max-width: 720px) {
-  .header-inner {
-    padding: 12px 16px;
-  }
-  .main-nav ul {
-    gap: 2px;
-  }
-  .main-nav a {
-    padding: 7px 10px;
-    font-size: 0.88rem;
-  }
-  .search-wrap input {
-    max-width: 100px;
-  }
-  .hero {
-    padding: 48px 18px 42px;
-  }
-}
-
-@media (max-width: 480px) {
-  .search-wrap {
-    display: none;
-  } /* keep header tidy on very small screens */
-  .product-card {
-    flex: 1 1 100%;
-    max-width: 100%;
-  }
-  .about-card {
-    padding: 22px;
-  }
-}
-
 @media (max-width: 768px) {
   .header-inner {
     flex-direction: column;
@@ -792,8 +824,45 @@ main {
     justify-content: center;
   }
 }
+
+@media (max-width: 720px) {
+  .header-inner {
+    padding: 12px 16px;
+  }
+  .main-nav ul {
+    gap: 2px;
+  }
+  .main-nav a {
+    padding: 7px 10px;
+    font-size: 0.88rem;
+  }
+  .hero {
+    padding: 48px 18px 42px;
+  }
+}
+
+@media (max-width: 480px) {
+  .search-wrap {
+    display: none;
+  }
+  .product-card {
+    flex: 1 1 100%;
+    max-width: 100%;
+  }
+  .about-card {
+    padding: 22px;
+  }
+}
+
 @media (max-width: 420px) {
   .cart-panel {
     width: 100%;
   }
+}
+
+.visually-hidden-label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
 }

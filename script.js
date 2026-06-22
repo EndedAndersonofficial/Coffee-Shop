@@ -1,14 +1,18 @@
-/* ===== helpers.js =====
-   Pure utility + render functions: data, storage, formatting, DOM rendering.
-   No event listeners live in this file — main.js wires up interactions.
-*/
+(function () {
+  var saved = null;
+  try {
+    saved = localStorage.getItem("theme");
+  } catch (e) {}
+  var theme =
+    saved ||
+    (window.matchMedia &&
+    window.matchMedia("(prefers-color-scheme: dark)").matches
+      ? "dark"
+      : "light");
+  document.documentElement.setAttribute("data-theme", theme);
+})();
 
-/* ----- products.json -----
-   In your real project, move this array into products.json and load it with:
-     fetch('products.json').then(r => r.json()).then(data => { PRODUCTS = data; renderProducts(); });
-   Replace `img` (emoji placeholder) with a real path like "images/espresso.jpg"
-   and swap the emoji <span> in renderProducts() for <img src="..." alt="...">.
-*/
+/* ===== helpers.js section ===== */
 const PRODUCTS = [
   {
     id: "esp-01",
@@ -92,13 +96,10 @@ const PRODUCTS = [
   },
 ];
 
-// ---------- Storage layer ----------
-// NOTE: This Claude.ai preview sandbox does not support localStorage,
-// so we use an in-memory object as a stand-in.
-//
-// TO USE REAL PERSISTENCE IN YOUR OWN PROJECT:
-// Delete `memoryStore`/`Storage` below and uncomment the
-// "REAL LOCALSTORAGE VERSION" block underneath it.
+// Storage shim — this Claude.ai preview sandbox can't use real localStorage for the
+// CART. Your actual repo's script.js should keep using real localStorage directly
+// (see the "REAL LOCALSTORAGE VERSION" note below). The THEME toggle below uses
+// real localStorage as-is, wrapped in try/catch, since this sandbox does allow that.
 const memoryStore = {};
 const Storage = {
   get(key) {
@@ -108,8 +109,7 @@ const Storage = {
     memoryStore[key] = JSON.stringify(value);
   },
 };
-
-/* ----- REAL LOCALSTORAGE VERSION (uncomment for local files) -----
+/* ----- REAL LOCALSTORAGE VERSION (use this in your actual repo) -----
 const Storage = {
   get(key) {
     const raw = localStorage.getItem(key);
@@ -149,16 +149,17 @@ function cartItemCount(cart) {
   return cart.reduce((sum, item) => sum + item.qty, 0);
 }
 
+// renderProducts now builds <li> items (was <article>) into the <ul id="product-grid">
 function renderProducts(grid, resultsInfo, activeCategory, searchTerm) {
   const list = getFilteredProducts(activeCategory, searchTerm);
   grid.innerHTML = "";
 
   if (list.length === 0) {
     grid.innerHTML =
-      '<p class="no-results">No coffee matches your search. Try a different name or category.</p>';
+      '<li class="no-results">No coffee matches your search. Try a different name or category.</li>';
   } else {
     list.forEach((p) => {
-      const card = document.createElement("article");
+      const card = document.createElement("li");
       card.className = "product-card";
       card.innerHTML = `
         <div class="product-img" role="img" aria-label="${p.name}">
@@ -213,17 +214,13 @@ function renderCart(cartItemsEl, cartTotalEl, cartCountEl, cart) {
 
   cartTotalEl.textContent = formatPrice(cartTotal(cart));
 }
-/* ===== main.js =====
-   App state, event wiring, and the smooth-scroll nav behavior.
-   Depends on helpers.js being loaded first.
-*/
 
-// ---------- State ----------
-let cart = Storage.get(CART_KEY) || []; // [{ id, qty }]
+/* ===== main.js section ===== */
+
+let cart = Storage.get(CART_KEY) || [];
 let activeCategory = "All";
 let searchTerm = "";
 
-// ---------- DOM refs ----------
 const grid = document.getElementById("product-grid");
 const resultsInfo = document.getElementById("results-info");
 const cartItemsEl = document.getElementById("cart-items");
@@ -233,7 +230,6 @@ const cartPanel = document.getElementById("cart-panel");
 const cartOverlay = document.getElementById("cart-overlay");
 const toast = document.getElementById("toast");
 
-// ---------- Toast ----------
 function showToast(msg) {
   toast.textContent = msg;
   toast.classList.add("show");
@@ -241,7 +237,6 @@ function showToast(msg) {
   showToast._t = setTimeout(() => toast.classList.remove("show"), 1800);
 }
 
-// ---------- Render wrappers (use helpers.js render functions with current state) ----------
 function refreshProducts() {
   renderProducts(grid, resultsInfo, activeCategory, searchTerm);
 }
@@ -250,7 +245,6 @@ function refreshCart() {
   renderCart(cartItemsEl, cartTotalEl, cartCountEl, cart);
 }
 
-// ---------- Cart logic ----------
 function addToCart(id) {
   const existing = cart.find((item) => item.id === id);
   if (existing) {
@@ -287,7 +281,6 @@ function saveCart() {
   refreshCart();
 }
 
-// ---------- Cart panel open/close ----------
 function openCart() {
   cartPanel.classList.add("open");
   cartOverlay.classList.add("open");
@@ -302,22 +295,13 @@ function closeCart() {
   document.getElementById("open-cart-btn").focus();
 }
 
-// ---------- Smooth-scroll nav (Menu / About / Contact) ----------
-// Each nav link has a real #anchor href (works even if JS fails to load)
-// AND a data-nav-target used here for an animated scroll + accessible
-// focus handoff to the destination section, with the active link highlighted.
 const navLinks = document.querySelectorAll("[data-nav-target]");
 
 function scrollToSection(targetId) {
   const target = document.getElementById(targetId);
   if (!target) return;
-
   target.scrollIntoView({ behavior: "smooth", block: "start" });
-
-  // Move keyboard/screen-reader focus to the section after scrolling so
-  // tabbing continues naturally from where the user landed.
   window.setTimeout(() => target.focus({ preventScroll: true }), 400);
-
   navLinks.forEach((link) => link.classList.remove("is-active"));
   const activeLink = document.querySelector(`[data-nav-target="${targetId}"]`);
   if (activeLink) activeLink.classList.add("is-active");
@@ -330,7 +314,25 @@ navLinks.forEach((link) => {
   });
 });
 
-// ---------- Event listeners ----------
+// ---------- Theme toggle (dark mode) ----------
+const themeToggle = document.getElementById("theme-toggle");
+
+function setTheme(theme) {
+  document.documentElement.setAttribute("data-theme", theme);
+  try {
+    localStorage.setItem("theme", theme);
+  } catch (e) {}
+  themeToggle.setAttribute("aria-checked", String(theme === "dark"));
+}
+
+// Sync switch state with whatever the head script already applied on load
+setTheme(document.documentElement.getAttribute("data-theme") || "light");
+
+themeToggle.addEventListener("click", () => {
+  const current = document.documentElement.getAttribute("data-theme");
+  setTheme(current === "dark" ? "light" : "dark");
+});
+
 document.getElementById("open-cart-btn").addEventListener("click", openCart);
 document.getElementById("close-cart-btn").addEventListener("click", closeCart);
 cartOverlay.addEventListener("click", closeCart);
@@ -383,6 +385,5 @@ document.getElementById("search-input").addEventListener("input", (e) => {
   refreshProducts();
 });
 
-// ---------- Init ----------
 refreshProducts();
 refreshCart();
