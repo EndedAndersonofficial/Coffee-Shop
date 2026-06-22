@@ -185,6 +185,7 @@ input:focus-visible {
 .search-wrap:focus-within {
   background: var(--surface);
   box-shadow: var(--focus-ring);
+  outline: none;
 }
 
 .search-wrap input {
@@ -226,6 +227,7 @@ input[type="search"]::-webkit-search-results-decoration {
   font-size: 0.9rem;
   flex-shrink: 0;
   transition: background 0.2s ease;
+  outline: none;
 }
 
 .search-wrap button:hover {
