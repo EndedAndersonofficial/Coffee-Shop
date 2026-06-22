@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Brew & Bean | Coffee Shop</title>
+    <meta
+      name="description"
+      content="Brew & Bean is a onlike Coffee Shop that makes you feel free"
+    />
+    <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg" />
+  </head>
+  <body>
+    <a href="#main-content" class="skip-link">Skip to content</a>
+
+    <!-- ===== index.html body markup ===== -->
+
+    <header class="site-header">
+      <div class="header-inner">
+        <a href="#main-content" class="brand" aria-label="Brew and Bean home">
+          <span class="logo-icon" aria-hidden="true">☕</span>
+          <span>Brew &amp; Bean</span>
+        </a>
+
+        <nav class="main-nav" aria-label="Primary navigation">
+          <ul>
+            <li><a href="#catalog">Menu</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#contact-footer">Contact</a></li>
+          </ul>
+        </nav>
+
+        <div class="header-actions">
+          <form class="search-wrap" role="search" id="search-form">
+            <label for="search-input" class="visually-hidden"
+              >Search coffee</label
+            >
+            <input
+              type="search"
+              id="search-input"
+              placeholder="Search coffee..."
+              aria-label="Search coffee by name"
+            />
+            <button type="submit" aria-label="Search">🔍</button>
+          </form>
+
+          <button
+            class="cart-btn"
+            id="open-cart-btn"
+            aria-haspopup="dialog"
+            aria-controls="cart-panel"
+          >
+            <span aria-hidden="true">🛒</span>
+            <span>Cart</span>
+            <span class="cart-count" id="cart-count" aria-live="polite">0</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <section class="hero">
+      <h1>Hand-Crafted Coffee, Delivered Fresh</h1>
+      <p>
+        Browse our menu of espresso classics, creamy lattes, and cold brews —
+        roasted in small batches every week.
+      </p>
+    </section>
+
+    <main id="main-content">
+      <h2 id="catalog" class="visually-hidden">Coffee Catalog</h2>
+
+      <div class="filters" role="group" aria-label="Filter coffee by category">
+        <button class="filter-btn" data-category="All" aria-pressed="true">
+          All
+        </button>
+        <button
+          class="filter-btn"
+          data-category="Espresso"
+          aria-pressed="false"
+        >
+          Espresso
+        </button>
+        <button class="filter-btn" data-category="Latte" aria-pressed="false">
+          Latte
+        </button>
+        <button
+          class="filter-btn"
+          data-category="Cappuccino"
+          aria-pressed="false"
+        >
+          Cappuccino
+        </button>
+        <button
+          class="filter-btn"
+          data-category="Cold Brew"
+          aria-pressed="false"
+        >
+          Cold Brew
+        </button>
+        <button class="filter-btn" data-category="Mocha" aria-pressed="false">
+          Mocha
+        </button>
+      </div>
+
+      <p class="results-info" id="results-info" aria-live="polite"></p>
+
+      <div class="product-grid" id="product-grid">
+        <!-- Product cards are rendered here by script.js -->
+      </div>
+
+      <section id="about" style="margin-top: 50px">
+        <h2>About Brew &amp; Bean</h2>
+        <p style="max-width: 640px">
+          We're a small-batch coffee roaster focused on ethically sourced beans
+          and simple, honest recipes. This page is a demo storefront — swap in
+          your own products, photos, and copy to make it yours.
+        </p>
+      </section>
+    </main>
+
+    <!-- Cart overlay + slide-out panel -->
+    <div class="cart-overlay" id="cart-overlay"></div>
+
+    <aside
+      class="cart-panel"
+      id="cart-panel"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Shopping cart"
+      aria-hidden="true"
+    >
+      <div class="cart-header">
+        <h2>Your Cart</h2>
+        <button class="close-cart" id="close-cart-btn" aria-label="Close cart">
+          ✕
+        </button>
+      </div>
+
+      <div class="cart-items" id="cart-items">
+        <!-- Cart line items rendered by script.js -->
+      </div>
+
+      <div class="cart-footer">
+        <div class="cart-total">
+          <span>Total</span>
+          <span id="cart-total">$0.00</span>
+        </div>
+        <button class="checkout-btn" id="checkout-btn">Checkout</button>
+        <button class="clear-cart-btn" id="clear-cart-btn">Clear cart</button>
+      </div>
+    </aside>
+
+    <div class="toast" id="toast" role="status"></div>
+
+    <footer class="site-footer" id="contact-footer">
+      <div class="footer-inner">
+        <p>☕ Brew &amp; Bean Coffee Co. &mdash; Roasted with care.</p>
+        <div class="footer-links">
+          <a href="#catalog">Menu</a>
+          <a href="#about">About</a>
+          <a href="mailto:hello@brewandbean.example"
+            >hello@brewandbean.example</a
+          >
+        </div>
+        <p>&copy; 2026 Brew &amp; Bean. All rights reserved.</p>
+      </div>
+    </footer>
+  </body>
+</html>
