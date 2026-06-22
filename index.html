@@ -13,22 +13,27 @@
     <script src="script.js"></script>
   </head>
   <body>
-    <a href="#main-content" class="skip-link">Skip to content</a>
+    <a href="#items" class="skip-link">Skip to content</a>
 
     <!-- ===== index.html body markup ===== -->
 
     <header class="site-header">
       <div class="header-inner">
-        <a href="#main-content" class="brand" aria-label="Brew and Bean home">
+        <a href="#items" class="brand" aria-label="Brew and Bean home">
           <span class="logo-icon" aria-hidden="true">☕</span>
           <span>Brew &amp; Bean</span>
         </a>
 
+        <!--
+      Nav links use real #anchors (works without JS) AND get intercepted by
+      main.js for an animated smooth scroll + accessible focus handoff.
+      data-nav-target points at the section id each button should land on.
+    -->
         <nav class="main-nav" aria-label="Primary navigation">
           <ul>
-            <li><a href="#catalog">Menu</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#contact-footer">Contact</a></li>
+            <li><a href="#items" data-nav-target="items">Menu</a></li>
+            <li><a href="#about" data-nav-target="about">About</a></li>
+            <li><a href="#footer" data-nav-target="footer">Contact</a></li>
           </ul>
         </nav>
 
@@ -68,9 +73,7 @@
       </p>
     </section>
 
-    <main id="main-content">
-      <h2 id="catalog" class="visually-hidden">Coffee Catalog</h2>
-
+    <main>
       <div class="filters" role="group" aria-label="Filter coffee by category">
         <button class="filter-btn" data-category="All" aria-pressed="true">
           All
@@ -106,17 +109,34 @@
 
       <p class="results-info" id="results-info" aria-live="polite"></p>
 
-      <div class="product-grid" id="product-grid">
-        <!-- Product cards are rendered here by script.js -->
-      </div>
+      <!-- #items: target for the "Menu" nav link -->
+      <section
+        class="items-section"
+        id="items"
+        tabindex="-1"
+        aria-label="Coffee menu"
+      >
+        <h2 class="visually-hidden">Coffee Catalog</h2>
+        <div class="product-grid" id="product-grid">
+          <!-- Product cards are rendered here by main.js -->
+        </div>
+      </section>
 
-      <section id="about" style="margin-top: 50px">
-        <h2>About Brew &amp; Bean</h2>
-        <p style="max-width: 640px">
-          We're a small-batch coffee roaster focused on ethically sourced beans
-          and simple, honest recipes. This page is a demo storefront — swap in
-          your own products, photos, and copy to make it yours.
-        </p>
+      <!-- #about: target for the "About" nav link -->
+      <section
+        class="about-section"
+        id="about"
+        tabindex="-1"
+        aria-label="About Brew and Bean"
+      >
+        <div class="about-card">
+          <h2>About Brew &amp; Bean</h2>
+          <p>
+            We're a small-batch coffee roaster focused on ethically sourced
+            beans and simple, honest recipes. This page is a demo storefront —
+            swap in your own products, photos, and copy to make it yours.
+          </p>
+        </div>
       </section>
     </main>
 
@@ -139,7 +159,7 @@
       </div>
 
       <div class="cart-items" id="cart-items">
-        <!-- Cart line items rendered by script.js -->
+        <!-- Cart line items rendered by main.js -->
       </div>
 
       <div class="cart-footer">
@@ -154,17 +174,26 @@
 
     <div class="toast" id="toast" role="status"></div>
 
-    <footer class="site-footer" id="contact-footer">
+    <!-- #footer: target for the "Contact" nav link; also the real page footer -->
+    <footer
+      class="site-footer"
+      id="footer"
+      tabindex="-1"
+      aria-label="Contact and site information"
+    >
       <div class="footer-inner">
+        <h2>Get in Touch</h2>
         <p>☕ Brew &amp; Bean Coffee Co. &mdash; Roasted with care.</p>
         <div class="footer-links">
-          <a href="#catalog">Menu</a>
+          <a href="#items">Menu</a>
           <a href="#about">About</a>
           <a href="mailto:hello@brewandbean.example"
             >hello@brewandbean.example</a
           >
         </div>
-        <p>&copy; 2026 Brew &amp; Bean. All rights reserved.</p>
+        <p class="footer-fine-print">
+          &copy; 2026 Brew &amp; Bean. All rights reserved.
+        </p>
       </div>
     </footer>
   </body>

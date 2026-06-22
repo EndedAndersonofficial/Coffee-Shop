@@ -1,3 +1,14 @@
+/* ===== helpers.js =====
+   Pure utility + render functions: data, storage, formatting, DOM rendering.
+   No event listeners live in this file — main.js wires up interactions.
+*/
+
+/* ----- products.json -----
+   In your real project, move this array into products.json and load it with:
+     fetch('products.json').then(r => r.json()).then(data => { PRODUCTS = data; renderProducts(); });
+   Replace `img` (emoji placeholder) with a real path like "images/espresso.jpg"
+   and swap the emoji <span> in renderProducts() for <img src="..." alt="...">.
+*/
 const PRODUCTS = [
   {
     id: "esp-01",
@@ -81,16 +92,13 @@ const PRODUCTS = [
   },
 ];
 
-/* ===== script.js ===== */
-
 // ---------- Storage layer ----------
 // NOTE: This Claude.ai preview sandbox does not support localStorage,
 // so we use an in-memory object as a stand-in.
 //
 // TO USE REAL PERSISTENCE IN YOUR OWN PROJECT:
-// 1) Delete the `memoryStore` object and the `Storage` object below.
-// 2) Uncomment the "REAL LOCALSTORAGE VERSION" block underneath it.
-
+// Delete `memoryStore`/`Storage` below and uncomment the
+// "REAL LOCALSTORAGE VERSION" block underneath it.
 const memoryStore = {};
 const Storage = {
   get(key) {
@@ -115,34 +123,11 @@ const Storage = {
 
 const CART_KEY = "brewAndBeanCart";
 
-// ---------- State ----------
-let cart = Storage.get(CART_KEY) || []; // [{ id, qty }]
-let activeCategory = "All";
-let searchTerm = "";
-
-// ---------- DOM refs ----------
-const grid = document.getElementById("product-grid");
-const resultsInfo = document.getElementById("results-info");
-const cartItemsEl = document.getElementById("cart-items");
-const cartTotalEl = document.getElementById("cart-total");
-const cartCountEl = document.getElementById("cart-count");
-const cartPanel = document.getElementById("cart-panel");
-const cartOverlay = document.getElementById("cart-overlay");
-const toast = document.getElementById("toast");
-
-// ---------- Helpers ----------
 function formatPrice(n) {
   return "$" + n.toFixed(2);
 }
 
-function showToast(msg) {
-  toast.textContent = msg;
-  toast.classList.add("show");
-  clearTimeout(showToast._t);
-  showToast._t = setTimeout(() => toast.classList.remove("show"), 1800);
-}
-
-function getFilteredProducts() {
+function getFilteredProducts(activeCategory, searchTerm) {
   return PRODUCTS.filter((p) => {
     const matchesCategory =
       activeCategory === "All" || p.category === activeCategory;
@@ -153,9 +138,19 @@ function getFilteredProducts() {
   });
 }
 
-// ---------- Render: product grid ----------
-function renderProducts() {
-  const list = getFilteredProducts();
+function cartTotal(cart) {
+  return cart.reduce((sum, item) => {
+    const product = PRODUCTS.find((p) => p.id === item.id);
+    return product ? sum + product.price * item.qty : sum;
+  }, 0);
+}
+
+function cartItemCount(cart) {
+  return cart.reduce((sum, item) => sum + item.qty, 0);
+}
+
+function renderProducts(grid, resultsInfo, activeCategory, searchTerm) {
+  const list = getFilteredProducts(activeCategory, searchTerm);
   grid.innerHTML = "";
 
   if (list.length === 0) {
@@ -186,59 +181,8 @@ function renderProducts() {
   resultsInfo.textContent = `Showing ${list.length} of ${PRODUCTS.length} coffees`;
 }
 
-// ---------- Cart logic ----------
-function addToCart(id) {
-  const existing = cart.find((item) => item.id === id);
-  if (existing) {
-    existing.qty += 1;
-  } else {
-    cart.push({ id, qty: 1 });
-  }
-  saveCart();
-  const product = PRODUCTS.find((p) => p.id === id);
-  showToast(`${product.name} added to cart`);
-}
-
-function changeQty(id, delta) {
-  const item = cart.find((i) => i.id === id);
-  if (!item) return;
-  item.qty += delta;
-  if (item.qty <= 0) {
-    cart = cart.filter((i) => i.id !== id);
-  }
-  saveCart();
-}
-
-function removeFromCart(id) {
-  cart = cart.filter((i) => i.id !== id);
-  saveCart();
-}
-
-function clearCart() {
-  cart = [];
-  saveCart();
-  showToast("Cart cleared");
-}
-
-function saveCart() {
-  Storage.set(CART_KEY, cart);
-  renderCart();
-}
-
-function cartTotal() {
-  return cart.reduce((sum, item) => {
-    const product = PRODUCTS.find((p) => p.id === item.id);
-    return product ? sum + product.price * item.qty : sum;
-  }, 0);
-}
-
-function cartItemCount() {
-  return cart.reduce((sum, item) => sum + item.qty, 0);
-}
-
-// ---------- Render: cart ----------
-function renderCart() {
-  cartCountEl.textContent = cartItemCount();
+function renderCart(cartItemsEl, cartTotalEl, cartCountEl, cart) {
+  cartCountEl.textContent = cartItemCount(cart);
 
   if (cart.length === 0) {
     cartItemsEl.innerHTML =
@@ -267,7 +211,75 @@ function renderCart() {
     });
   }
 
-  cartTotalEl.textContent = formatPrice(cartTotal());
+  cartTotalEl.textContent = formatPrice(cartTotal(cart));
+}
+// ---------- State ----------
+let cart = Storage.get(CART_KEY) || []; // [{ id, qty }]
+let activeCategory = "All";
+let searchTerm = "";
+
+// ---------- DOM refs ----------
+const grid = document.getElementById("product-grid");
+const resultsInfo = document.getElementById("results-info");
+const cartItemsEl = document.getElementById("cart-items");
+const cartTotalEl = document.getElementById("cart-total");
+const cartCountEl = document.getElementById("cart-count");
+const cartPanel = document.getElementById("cart-panel");
+const cartOverlay = document.getElementById("cart-overlay");
+const toast = document.getElementById("toast");
+
+// ---------- Toast ----------
+function showToast(msg) {
+  toast.textContent = msg;
+  toast.classList.add("show");
+  clearTimeout(showToast._t);
+  showToast._t = setTimeout(() => toast.classList.remove("show"), 1800);
+}
+
+// ---------- Render wrappers (use helpers.js render functions with current state) ----------
+function refreshProducts() {
+  renderProducts(grid, resultsInfo, activeCategory, searchTerm);
+}
+
+function refreshCart() {
+  renderCart(cartItemsEl, cartTotalEl, cartCountEl, cart);
+}
+
+// ---------- Cart logic ----------
+function addToCart(id) {
+  const existing = cart.find((item) => item.id === id);
+  if (existing) {
+    existing.qty += 1;
+  } else {
+    cart.push({ id, qty: 1 });
+  }
+  saveCart();
+  const product = PRODUCTS.find((p) => p.id === id);
+  showToast(`${product.name} added to cart`);
+}
+
+function changeQty(id, delta) {
+  const item = cart.find((i) => i.id === id);
+  if (!item) return;
+  item.qty += delta;
+  if (item.qty <= 0) cart = cart.filter((i) => i.id !== id);
+  saveCart();
+}
+
+function removeFromCart(id) {
+  cart = cart.filter((i) => i.id !== id);
+  saveCart();
+}
+
+function clearCart() {
+  cart = [];
+  saveCart();
+  showToast("Cart cleared");
+}
+
+function saveCart() {
+  Storage.set(CART_KEY, cart);
+  refreshCart();
 }
 
 // ---------- Cart panel open/close ----------
@@ -284,6 +296,34 @@ function closeCart() {
   cartPanel.setAttribute("aria-hidden", "true");
   document.getElementById("open-cart-btn").focus();
 }
+
+// ---------- Smooth-scroll nav (Menu / About / Contact) ----------
+// Each nav link has a real #anchor href (works even if JS fails to load)
+// AND a data-nav-target used here for an animated scroll + accessible
+// focus handoff to the destination section, with the active link highlighted.
+const navLinks = document.querySelectorAll("[data-nav-target]");
+
+function scrollToSection(targetId) {
+  const target = document.getElementById(targetId);
+  if (!target) return;
+
+  target.scrollIntoView({ behavior: "smooth", block: "start" });
+
+  // Move keyboard/screen-reader focus to the section after scrolling so
+  // tabbing continues naturally from where the user landed.
+  window.setTimeout(() => target.focus({ preventScroll: true }), 400);
+
+  navLinks.forEach((link) => link.classList.remove("is-active"));
+  const activeLink = document.querySelector(`[data-nav-target="${targetId}"]`);
+  if (activeLink) activeLink.classList.add("is-active");
+}
+
+navLinks.forEach((link) => {
+  link.addEventListener("click", (e) => {
+    e.preventDefault();
+    scrollToSection(link.dataset.navTarget);
+  });
+});
 
 // ---------- Event listeners ----------
 document.getElementById("open-cart-btn").addEventListener("click", openCart);
@@ -325,19 +365,19 @@ document.querySelectorAll(".filter-btn").forEach((btn) => {
       .forEach((b) => b.setAttribute("aria-pressed", "false"));
     btn.setAttribute("aria-pressed", "true");
     activeCategory = btn.dataset.category;
-    renderProducts();
+    refreshProducts();
   });
 });
 
-document.getElementById("search-form").addEventListener("submit", (e) => {
-  e.preventDefault();
-});
+document
+  .getElementById("search-form")
+  .addEventListener("submit", (e) => e.preventDefault());
 
 document.getElementById("search-input").addEventListener("input", (e) => {
   searchTerm = e.target.value;
-  renderProducts();
+  refreshProducts();
 });
 
 // ---------- Init ----------
-renderProducts();
-renderCart();
+refreshProducts();
+refreshCart();
