@@ -769,3 +769,28 @@ main {
     padding: 22px;
   }
 }
+
+@media (max-width: 768px) {
+  .header-inner {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .header-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+  .search-wrap {
+    flex: 1;
+  }
+  .search-wrap input {
+    max-width: none;
+  }
+  .filters {
+    justify-content: center;
+  }
+}
+@media (max-width: 420px) {
+  .cart-panel {
+    width: 100%;
+  }
+}
