@@ -18,7 +18,7 @@
   --shadow-sm: 0 2px 8px rgba(124, 58, 237, 0.08);
   --shadow-md: 0 10px 30px rgba(124, 58, 237, 0.14);
   --shadow-lg: 0 18px 40px rgba(124, 58, 237, 0.2);
-  --focus-ring: 0 0 0 3px rgba(124, 58, 237, 0.35);
+  --focus-ring: 0 0 0 3px #7a5c44;
 }
 
 * {
@@ -92,7 +92,6 @@ a:focus-visible,
 button:focus-visible,
 input:focus-visible {
   outline: none;
-  box-shadow: var(--focus-ring);
   border-radius: var(--radius-sm);
 }
 
@@ -185,7 +184,6 @@ input:focus-visible {
 .search-wrap:focus-within {
   background: var(--surface);
   box-shadow: var(--focus-ring);
-  outline: none;
 }
 
 .search-wrap input {
@@ -227,7 +225,6 @@ input[type="search"]::-webkit-search-results-decoration {
   font-size: 0.9rem;
   flex-shrink: 0;
   transition: background 0.2s ease;
-  outline: none;
 }
 
 .search-wrap button:hover {
