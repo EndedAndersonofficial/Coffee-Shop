@@ -32,9 +32,9 @@
   --text-dark: #f5e9da;
   --text-muted: #c9ad90;
   --border-subtle: #3d2f22;
-  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.45);
-  --shadow-md: 0 5px 18px rgba(0, 0, 0, 0.5);
-  --shadow-lg: 0 12px 28px rgba(0, 0, 0, 0.55);
+  --shadow-sm: 0 2px 8px #d99b5b;
+  --shadow-md: 0 5px 18px #d99b5b;
+  --shadow-lg: 0 12px 28px #d99b5b;
   --focus-ring: 0 0 0 2px #f2b463;
 }
 
