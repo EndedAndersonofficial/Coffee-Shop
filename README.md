@@ -1,70 +1,99 @@
 # Brew & Bean ☕
 
-A modern, responsive coffee shop website designed to showcase a premium café experience through clean design, engaging visuals, and intuitive user interactions.
+A modern, fully responsive coffee shop web application built with **HTML**, **CSS**, and **Vanilla JavaScript**.
 
-Built with HTML, CSS, and JavaScript, Brew & Bean demonstrates modern frontend development practices, responsive layouts, interactive UI elements, and accessibility-focused design.
-
-## 🚀 Live Demo
-
-https://brew-and-bean.netlify.app
+Brew & Bean delivers a premium café-inspired experience featuring dynamic product browsing, intelligent search, category filtering, shopping cart functionality, and seamless Light/Dark Mode support. The project was created to demonstrate modern frontend development practices, responsive design principles, and user-focused interface implementation.
 
 ---
 
-## 📖 Overview
+## 🚀 Live Demo
 
-Brew & Bean is a fictional coffee shop website created as a frontend portfolio project.
-
-The goal of this project was to build a visually appealing and fully responsive user experience while practicing core web development skills such as layout design, component organization, responsive behavior, and interactive functionality.
+🔗 https://brew-and-bean.netlify.app
 
 ---
 
 ## ✨ Features
 
-* Fully responsive design
-* Modern coffee shop branding and layout
-* Interactive product catalog
-* Search functionality
-* Shopping cart interface
-* Mobile-friendly navigation
-* Responsive product grid
-* Smooth user interactions
-* Accessible and semantic HTML structure
-* Optimized for desktop, tablet, and mobile devices
+### User Experience
+
+* ☕ Modern coffee shop interface
+* 🌙 Dark / Light Mode toggle
+* 📱 Fully responsive design
+* 🔍 Product search functionality
+* 🛒 Interactive shopping cart
+* 🎯 Category filtering
+* ⚡ Smooth interactions and transitions
+* ♿ Accessible and semantic HTML structure
+
+### Responsive Design
+
+Optimized for:
+
+* Mobile Devices
+* Tablets
+* Laptops
+* Desktop Screens
+
+The layout automatically adapts to different screen sizes while maintaining usability and visual consistency.
 
 ---
 
-## 🛠️ Technologies Used
+## 📸 Screenshots
+
+### ☀️ Light Mode
+
+<p align="center">
+  <img src="./screenshots/home-light.png" alt="Brew & Bean Light Mode" width="900">
+</p>
+
+<p align="center">
+  Modern coffee shop interface with product browsing, filtering, and cart functionality.
+</p>
+
+---
+
+### 🌙 Dark Mode
+
+<p align="center">
+  <img src="./screenshots/home-dark.png" alt="Brew & Bean Dark Mode" width="900">
+</p>
+
+<p align="center">
+  Fully integrated dark theme designed for improved accessibility and comfortable viewing.
+</p>
+
+---
+
+### 📱 Mobile Experience
+
+<p align="center">
+  <img src="./screenshots/mobile-view.png" alt="Brew & Bean Mobile View" width="320">
+</p>
+
+<p align="center">
+  Responsive mobile layout optimized for smaller screens and touch interactions.
+</p>
+
+---
+
+## 🛠️ Built With
+
+### Frontend
 
 * HTML5
 * CSS3
-* JavaScript (Vanilla JS)
+* JavaScript (ES6+)
 
-### Frontend Concepts
+### Concepts & Techniques
 
+* Responsive Design
 * Flexbox
 * CSS Grid
-* Responsive Design
 * Mobile-First Principles
-* Semantic HTML
 * DOM Manipulation
-
----
-
-## 📱 Responsive Design
-
-The website is optimized for:
-
-* Mobile Devices (≤ 420px)
-* Tablets (≤ 768px)
-* Laptops & Desktops (> 768px)
-
-Responsive features include:
-
-* Adaptive layouts
-* Flexible product grids
-* Responsive typography
-* Mobile-friendly navigation
-* Scalable images and components
+* Theme Switching
+* Dynamic Filtering
+* Interactive UI Components
 
 ---
 
@@ -72,39 +101,49 @@ Responsive features include:
 
 ```text
 Coffee-Shop/
-├── index.html
-├── style.css
-├── script.js
+│
 ├── assets/
 │   ├── images/
 │   └── icons/
+│
+├── screenshots/
+│   ├── home-light.png
+│   ├── home-dark.png
+│   └── mobile-view.png
+│
+├── index.html
+├── style.css
+├── script.js
 └── README.md
 ```
 
 ---
 
-## 🎯 Learning Objectives
+## 🎯 Project Goals
 
-This project was built to strengthen skills in:
+This project was built to improve and demonstrate:
 
-* Frontend Development
+* Frontend Development Skills
 * Responsive Web Design
+* JavaScript Functionality
 * User Interface Design
-* JavaScript Interactivity
 * Git & GitHub Workflow
 * Project Deployment
+* Real-World Portfolio Development
 
 ---
 
 ## 🔮 Future Improvements
 
-* Product filtering by category
-* Dark mode support
+* Product detail pages
+* Wishlist functionality
 * User authentication
 * Backend integration
 * Online ordering system
 * Payment gateway integration
-* Improved animations and micro-interactions
+* Order history
+* Product reviews and ratings
+* Performance optimization
 
 ---
 
@@ -114,7 +153,8 @@ This project was built to strengthen skills in:
 
 Independent Developer & Frontend Learner
 
-* GitHub: https://github.com/EndedAndersonofficial
+**GitHub:**
+https://github.com/EndedAndersonofficial
 
 Passionate about building modern web experiences, exploring new technologies, and continuously improving through real-world projects.
 
@@ -122,4 +162,8 @@ Passionate about building modern web experiences, exploring new technologies, an
 
 ## 📄 License
 
-This project is intended for educational and portfolio purposes.
+This project is intended for educational and portfolio purposes only.
+
+---
+
+### ⭐ If you found this project interesting, consider giving it a star.
